@@ -4,6 +4,7 @@ import { GitBranch, Mail, ShieldCheck } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import * as React from "react";
 import { toast } from "sonner";
+import { ChangePasswordCard } from "@/components/feature/change-password-card";
 import { GitHubPanel } from "@/components/feature/github-panel";
 import { PageHeader } from "@/components/layout/page-header";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -83,6 +84,10 @@ export default function ProfilePage() {
           </div>
         </CardContent>
       </Card>
+
+      <div className="pt-8">
+        <ChangePasswordCard />
+      </div>
 
       <div className="pt-8">
         <p className="pb-3 text-2xs font-medium uppercase tracking-wider text-ink-subtle">

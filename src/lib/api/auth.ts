@@ -16,7 +16,15 @@ export interface ActivatePayload {
   confirmPassword: string;
 }
 
+export interface ChangePasswordPayload {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 export const authApi = {
+  changePassword: (payload: ChangePasswordPayload) =>
+    apiClient.post<void>("/auth/change-password", payload),
   login: (payload: LoginPayload) =>
     apiClient.post<AuthenticatedSession>("/auth/login", payload),
   activate: (payload: ActivatePayload) =>
