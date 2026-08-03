@@ -41,5 +41,9 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api/|_next/static|_next/image|favicon.ico|.*\\.svg).*)"],
+  matcher: [
+    // Everything except the API proxy, Next internals, and the metadata routes that
+    // crawlers fetch without cookies (icons, social images, manifest, robots).
+    "/((?!api/|_next/static|_next/image|favicon.ico|icon|apple-icon|opengraph-image|twitter-image|manifest.webmanifest|robots.txt|sitemap.xml|.*\\..*).*)",
+  ],
 };
