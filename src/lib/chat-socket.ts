@@ -5,10 +5,15 @@ import { chatApi, type ChatMessage, type PresenceSignal, type TypingSignal } fro
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8081/api/v1";
 
+// The HTTP API may be proxied through this origin so that auth cookies stay first-party.
+// A WebSocket cannot go through that proxy, so it connects to the backend directly and
+// authenticates with a short-lived ticket instead of a cookie.
+const SOCKET_BASE_URL = process.env.NEXT_PUBLIC_WS_URL ?? API_BASE_URL;
+
 function socketUrl(ticket: string) {
-  const absolute = /^https?:\/\//.test(API_BASE_URL)
-    ? API_BASE_URL
-    : `${window.location.origin}${API_BASE_URL}`;
+  const absolute = /^https?:\/\//.test(SOCKET_BASE_URL)
+    ? SOCKET_BASE_URL
+    : `${window.location.origin}${SOCKET_BASE_URL}`;
 
   const base = absolute.replace(/^http/, "ws");
   return `${base}/ws?ticket=${encodeURIComponent(ticket)}`;
