@@ -78,7 +78,8 @@ export interface BlueprintSummary {
 }
 
 export const curriculumApi = {
-  mine: () => apiClient.get<Curriculum>("/curriculum"),
+  mine: (cohortId?: string) =>
+    apiClient.get<Curriculum>("/curriculum", { searchParams: { cohortId } }),
   forCohort: (cohortId: string) => apiClient.get<Curriculum>(`/cohorts/${cohortId}/curriculum`),
   lesson: (lessonId: string) => apiClient.get<LessonDetail>(`/lessons/${lessonId}`),
   complete: (lessonId: string) => apiClient.post<void>(`/lessons/${lessonId}/complete`),

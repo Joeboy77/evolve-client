@@ -3,10 +3,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { timelineApi } from "@/lib/api/timeline";
 
-export function useMyTimeline() {
+export function useMyTimeline(cohortId?: string) {
   return useQuery({
-    queryKey: ["timeline", "mine"],
-    queryFn: timelineApi.mine,
+    queryKey: ["timeline", "mine", cohortId],
+    queryFn: () => timelineApi.mine(cohortId),
     retry: false,
   });
 }

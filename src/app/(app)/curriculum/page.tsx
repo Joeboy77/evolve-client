@@ -6,6 +6,8 @@ import { CurriculumView } from "@/components/feature/curriculum-view";
 import { ProgressRing } from "@/components/feature/progress-ring";
 import { TrackBadge } from "@/components/feature/track-badge";
 import { EmptyState } from "@/components/layout/empty-state";
+import { CohortSwitcher } from "@/components/feature/cohort-switcher";
+import { useActiveCohort } from "@/lib/hooks/use-active-cohort";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,7 +15,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useMyCurriculum } from "@/lib/hooks/use-curriculum";
 
 export default function StudentCurriculumPage() {
-  const curriculum = useMyCurriculum();
+  const { activeCohortId } = useActiveCohort();
+  const curriculum = useMyCurriculum(activeCohortId);
 
   if (curriculum.isLoading) {
     return (
@@ -71,6 +74,8 @@ export default function StudentCurriculumPage() {
           )
         }
       />
+
+      <CohortSwitcher />
 
       <Card className="mb-6">
         <CardContent className="flex flex-wrap items-center gap-6">

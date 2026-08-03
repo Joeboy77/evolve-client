@@ -6,6 +6,8 @@ import * as React from "react";
 import { DeadlineText } from "@/components/feature/project-deadline";
 import { SubmissionStatusPill } from "@/components/feature/status-pill";
 import { EmptyState } from "@/components/layout/empty-state";
+import { CohortSwitcher } from "@/components/feature/cohort-switcher";
+import { useActiveCohort } from "@/lib/hooks/use-active-cohort";
 import { PageHeader } from "@/components/layout/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -70,7 +72,8 @@ function ProjectRow({ project }: { project: ProjectSummary }) {
 }
 
 export default function StudentProjectsPage() {
-  const projects = useMyProjects();
+  const { activeCohortId } = useActiveCohort();
+  const projects = useMyProjects(activeCohortId);
 
   if (projects.isLoading) {
     return (
@@ -127,6 +130,8 @@ export default function StudentProjectsPage() {
         title="Projects"
         description={`${data.length} briefs across your cohort. Ship a GitHub repository for each one and your mentor reviews it here.`}
       />
+
+      <CohortSwitcher />
 
       <Card className="mb-6">
         <CardContent className="grid grid-cols-2 gap-px overflow-hidden p-0 sm:grid-cols-4">

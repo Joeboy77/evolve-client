@@ -55,6 +55,7 @@ export interface Timeline {
 }
 
 export const timelineApi = {
-  mine: () => apiClient.get<Timeline>("/timeline"),
+  mine: (cohortId?: string) =>
+    apiClient.get<Timeline>("/timeline", { searchParams: { cohortId } }),
   forCohort: (cohortId: string) => apiClient.get<Timeline>(`/cohorts/${cohortId}/timeline`),
 };

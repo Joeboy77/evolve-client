@@ -11,10 +11,10 @@ function describeError(error: unknown) {
   return error instanceof ApiError ? error.message : "Something went wrong. Please try again.";
 }
 
-export function useMyCurriculum() {
+export function useMyCurriculum(cohortId?: string) {
   return useQuery({
-    queryKey: [curriculumQueryKey, "mine"],
-    queryFn: curriculumApi.mine,
+    queryKey: [curriculumQueryKey, "mine", cohortId],
+    queryFn: () => curriculumApi.mine(cohortId),
     retry: false,
   });
 }

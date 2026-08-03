@@ -16,6 +16,8 @@ import { DeadlineText } from "@/components/feature/project-deadline";
 import { SubmissionStatusPill } from "@/components/feature/status-pill";
 import { TrackBadge } from "@/components/feature/track-badge";
 import { EmptyState } from "@/components/layout/empty-state";
+import { CohortSwitcher } from "@/components/feature/cohort-switcher";
+import { useActiveCohort } from "@/lib/hooks/use-active-cohort";
 import { PageHeader } from "@/components/layout/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -48,7 +50,8 @@ function SectionHeading({ title, href, cta }: { title: string; href: string; cta
 }
 
 export default function StudentDashboardPage() {
-  const dashboard = useStudentDashboard();
+  const { activeCohortId } = useActiveCohort();
+  const dashboard = useStudentDashboard(activeCohortId);
 
   if (dashboard.isLoading) {
     return (
@@ -84,6 +87,8 @@ export default function StudentDashboardPage() {
         title={`Welcome back, ${data.studentName.split(" ")[0]}`}
         description={`Week ${data.currentWeek} of ${data.totalWeeks} · ${data.cohortName}`}
       />
+
+      <CohortSwitcher />
 
       <Card className="mb-6">
         <CardContent className="space-y-5">

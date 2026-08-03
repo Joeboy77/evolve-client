@@ -16,10 +16,10 @@ function describeError(error: unknown) {
   return error instanceof ApiError ? error.message : "Something went wrong. Please try again.";
 }
 
-export function useMyProjects() {
+export function useMyProjects(cohortId?: string) {
   return useQuery({
-    queryKey: [projectsQueryKey, "mine"],
-    queryFn: projectsApi.mine,
+    queryKey: [projectsQueryKey, "mine", cohortId],
+    queryFn: () => projectsApi.mine(cohortId),
     retry: false,
   });
 }

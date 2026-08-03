@@ -105,6 +105,7 @@ export interface AdminDashboard {
 }
 
 export const dashboardApi = {
-  student: () => apiClient.get<StudentDashboard>("/dashboard"),
+  student: (cohortId?: string) =>
+    apiClient.get<StudentDashboard>("/dashboard", { searchParams: { cohortId } }),
   admin: () => apiClient.get<AdminDashboard>("/admin/dashboard"),
 };

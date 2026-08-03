@@ -5,13 +5,16 @@ import { ProgressRing } from "@/components/feature/progress-ring";
 import { DeadlineAlert, TimelineView } from "@/components/feature/timeline-view";
 import { TrackBadge } from "@/components/feature/track-badge";
 import { EmptyState } from "@/components/layout/empty-state";
+import { CohortSwitcher } from "@/components/feature/cohort-switcher";
+import { useActiveCohort } from "@/lib/hooks/use-active-cohort";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMyTimeline } from "@/lib/hooks/use-timeline";
 
 export default function StudentTimelinePage() {
-  const timeline = useMyTimeline();
+  const { activeCohortId } = useActiveCohort();
+  const timeline = useMyTimeline(activeCohortId);
 
   if (timeline.isLoading) {
     return (
@@ -46,6 +49,8 @@ export default function StudentTimelinePage() {
         title="Timeline"
         description={`Week ${data.currentWeek} of ${data.totalWeeks} · ${data.cohortName}`}
       />
+
+      <CohortSwitcher />
 
       <Card className="mb-6">
         <CardContent className="space-y-4">

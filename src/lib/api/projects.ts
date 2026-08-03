@@ -103,7 +103,8 @@ export interface ReviewQueueFilters {
 }
 
 export const projectsApi = {
-  mine: () => apiClient.get<ProjectSummary[]>("/projects"),
+  mine: (cohortId?: string) =>
+    apiClient.get<ProjectSummary[]>("/projects", { searchParams: { cohortId } }),
   detail: (assignmentId: string) => apiClient.get<ProjectDetail>(`/projects/${assignmentId}`),
   submit: (assignmentId: string, githubRepoUrl: string) =>
     apiClient.post<Submission>(`/projects/${assignmentId}/submissions`, { githubRepoUrl }),

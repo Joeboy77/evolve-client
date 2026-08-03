@@ -32,6 +32,7 @@ export interface CohortPayload {
 }
 
 export const cohortsApi = {
+  mine: () => apiClient.get<Cohort[]>("/cohorts/mine"),
   list: (includeArchived: boolean) =>
     apiClient.get<Cohort[]>("/cohorts", { searchParams: { includeArchived } }),
   findOne: (id: string) => apiClient.get<Cohort>(`/cohorts/${id}`),
