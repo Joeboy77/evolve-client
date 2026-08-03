@@ -51,6 +51,7 @@ import {
   useUsers,
   useAssignMentor,
 } from "@/lib/hooks/use-users";
+import { useSession } from "@/lib/hooks/use-session";
 import { initialsOf } from "@/lib/utils";
 
 const roleLabels: Record<Role, string> = {
@@ -82,6 +83,8 @@ function MentorCell({ user, mentors }: { user: UserProfile; mentors: UserProfile
 }
 
 export default function UserManagementPage() {
+  const session = useSession();
+  const isAdmin = session.data?.role === "ADMIN";
   const [search, setSearch] = React.useState("");
   const [debouncedSearch, setDebouncedSearch] = React.useState("");
   const [status, setStatus] = React.useState<UserStatus | "ALL">("ALL");
@@ -119,9 +122,12 @@ export default function UserManagementPage() {
   return (
     <>
       <PageHeader
-        title="Users"
-        description="Add students and mentors, hand out activation links, and control who can sign in."
+        title={isAdmin ? "Users" : "My students"}
+        description={isAdmin
+          ? "Add students and mentors, hand out activation links, and control who can sign in."
+          : "The students assigned to you."}
         actions={
+          isAdmin ? (
           <Button
             size="sm"
             onClick={() => {
@@ -132,6 +138,7 @@ export default function UserManagementPage() {
             <UserPlus />
             Add user
           </Button>
+          ) : undefined
         }
       />
 
@@ -202,7 +209,9 @@ export default function UserManagementPage() {
             description={
               hasFilters
                 ? "Try a different search term or clear the filters."
-                : "Add your first student or mentor and send them an activation link."
+                : isAdmin
+                    ? "Add your first student or mentor and send them an activation link."
+                    : "No students have been assigned to you yet."
             }
             action={
               !hasFilters && (
@@ -252,7 +261,11 @@ export default function UserManagementPage() {
                   </TableCell>
                   <TableCell>
                     {user.role === "STUDENT" ? (
-                      <MentorCell user={user} mentors={mentorOptions} />
+                      isAdmin ? (
+                        <MentorCell user={user} mentors={mentorOptions} />
+                      ) : (
+                        <span className="text-xs text-ink-muted">{user.mentorName ?? "—"}</span>
+                      )
                     ) : (
                       <span className="text-2xs text-ink-subtle">—</span>
                     )}

@@ -68,6 +68,31 @@ const adminNavigation: NavigationSection[] = [
   },
 ];
 
+const mentorNavigation: NavigationSection[] = [
+  {
+    heading: "Overview",
+    items: [{ label: "Dashboard", href: "/admin", icon: LayoutGrid }],
+  },
+  {
+    heading: "My students",
+    items: [
+      { label: "Students", href: "/admin/users", icon: Users },
+      { label: "Projects", href: "/admin/projects", icon: FolderGit2 },
+      { label: "Commit activity", href: "/admin/github", icon: Activity },
+    ],
+  },
+  {
+    heading: "Connect",
+    items: [
+      { label: "Chat", href: "/admin/chat", icon: MessagesSquare },
+      { label: "Meetings", href: "/admin/meetings", icon: CalendarClock },
+    ],
+  },
+];
+
 export function navigationFor(role: Role): NavigationSection[] {
-  return role === "STUDENT" ? studentNavigation : adminNavigation;
+  if (role === "STUDENT") {
+    return studentNavigation;
+  }
+  return role === "MENTOR" ? mentorNavigation : adminNavigation;
 }
