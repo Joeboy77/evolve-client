@@ -6,7 +6,11 @@ import { chatApi, type ChatMessage, type PresenceSignal, type TypingSignal } fro
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8081/api/v1";
 
 function socketUrl(ticket: string) {
-  const base = API_BASE_URL.replace(/^http/, "ws");
+  const absolute = /^https?:\/\//.test(API_BASE_URL)
+    ? API_BASE_URL
+    : `${window.location.origin}${API_BASE_URL}`;
+
+  const base = absolute.replace(/^http/, "ws");
   return `${base}/ws?ticket=${encodeURIComponent(ticket)}`;
 }
 

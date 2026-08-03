@@ -1,5 +1,12 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8081/api/v1";
 
+function originFor(base: string) {
+  if (/^https?:\/\//.test(base)) {
+    return undefined;
+  }
+  return typeof window === "undefined" ? "http://localhost" : window.location.origin;
+}
+
 export interface ApiEnvelope<T> {
   success: boolean;
   data: T;
@@ -70,7 +77,7 @@ function refreshOnce(): Promise<boolean> {
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { body, searchParams, headers, ...rest } = options;
 
-  const url = new URL(`${API_BASE_URL}${path}`);
+  const url = new URL(`${API_BASE_URL}${path}`, originFor(API_BASE_URL));
   if (searchParams) {
     for (const [key, value] of Object.entries(searchParams)) {
       if (value !== undefined && value !== null && value !== "") {
