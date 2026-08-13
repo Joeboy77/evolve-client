@@ -1,12 +1,12 @@
 "use client";
 
-import { ArrowLeft, CalendarClock, FolderGit2, ListChecks } from "lucide-react";
+import { ArrowLeft, CalendarClock, ListChecks } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { LessonNotes } from "@/components/feature/lesson-notes";
 import { DeadlineText } from "@/components/feature/project-deadline";
 import { SubmissionPanel } from "@/components/feature/submission-panel";
-import { EmptyState } from "@/components/layout/empty-state";
+import { ErrorState } from "@/components/layout/error-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useProject } from "@/lib/hooks/use-projects";
@@ -27,11 +27,24 @@ export default function ProjectDetailPage() {
 
   if (project.isError || !project.data) {
     return (
-      <EmptyState
-        icon={FolderGit2}
-        title="Project unavailable"
-        description="This project either does not exist or belongs to a cohort you are not part of."
-      />
+      <div className="mx-auto max-w-3xl">
+        <Link
+          href="/projects"
+          className="inline-flex items-center gap-1.5 text-xs text-ink-muted transition-colors hover:text-ink"
+        >
+          <ArrowLeft className="size-3.5" />
+          All projects
+        </Link>
+        <div className="pt-5">
+          <ErrorState
+            error={project.error}
+            onRetry={() => project.refetch()}
+            isRetrying={project.isFetching}
+            missingTitle="Project unavailable"
+            missingDescription="This project either does not exist or belongs to a cohort you are not part of."
+          />
+        </div>
+      </div>
     );
   }
 

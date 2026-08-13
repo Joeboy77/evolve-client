@@ -20,7 +20,8 @@ export function useMyProjects(cohortId?: string) {
   return useQuery({
     queryKey: [projectsQueryKey, "mine", cohortId],
     queryFn: () => projectsApi.mine(cohortId),
-    retry: false,
+    // Inherits the shared policy: never retry a 4xx, retry twice on a network or 5xx
+    // failure. The API sleeps when idle, so the first request of the day can lose a race.
   });
 }
 

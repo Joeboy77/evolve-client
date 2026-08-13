@@ -6,6 +6,7 @@ import * as React from "react";
 import { DeadlineText } from "@/components/feature/project-deadline";
 import { SubmissionStatusPill } from "@/components/feature/status-pill";
 import { EmptyState } from "@/components/layout/empty-state";
+import { ErrorState } from "@/components/layout/error-state";
 import { CohortSwitcher } from "@/components/feature/cohort-switcher";
 import { useActiveCohort } from "@/lib/hooks/use-active-cohort";
 import { PageHeader } from "@/components/layout/page-header";
@@ -85,10 +86,27 @@ export default function StudentProjectsPage() {
     );
   }
 
-  if (projects.isError || !projects.data || projects.data.length === 0) {
+  if (projects.isError) {
     return (
       <>
         <PageHeader title="Projects" />
+        <CohortSwitcher />
+        <ErrorState
+          error={projects.error}
+          onRetry={() => projects.refetch()}
+          isRetrying={projects.isFetching}
+          missingTitle="This cohort is not available"
+          missingDescription="You are not enrolled in this cohort, or it has been removed. Switch cohorts above, or ask your mentor."
+        />
+      </>
+    );
+  }
+
+  if (!projects.data || projects.data.length === 0) {
+    return (
+      <>
+        <PageHeader title="Projects" />
+        <CohortSwitcher />
         <EmptyState
           icon={FolderGit2}
           title="No projects yet"

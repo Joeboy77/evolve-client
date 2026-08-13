@@ -16,6 +16,7 @@ import { DeadlineText } from "@/components/feature/project-deadline";
 import { SubmissionStatusPill } from "@/components/feature/status-pill";
 import { TrackBadge } from "@/components/feature/track-badge";
 import { EmptyState } from "@/components/layout/empty-state";
+import { ErrorState } from "@/components/layout/error-state";
 import { CohortSwitcher } from "@/components/feature/cohort-switcher";
 import { useActiveCohort } from "@/lib/hooks/use-active-cohort";
 import { PageHeader } from "@/components/layout/page-header";
@@ -66,7 +67,23 @@ export default function StudentDashboardPage() {
     );
   }
 
-  if (dashboard.isError || !dashboard.data) {
+  if (dashboard.isError) {
+    return (
+      <>
+        <PageHeader title="Dashboard" />
+        <CohortSwitcher />
+        <ErrorState
+          error={dashboard.error}
+          onRetry={() => dashboard.refetch()}
+          isRetrying={dashboard.isFetching}
+          missingTitle="You are not enrolled in a cohort yet"
+          missingDescription="Once your mentor assigns you to a cohort, your progress, deadlines, and sessions appear right here."
+        />
+      </>
+    );
+  }
+
+  if (!dashboard.data) {
     return (
       <>
         <PageHeader title="Dashboard" />
