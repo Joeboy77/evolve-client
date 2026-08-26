@@ -29,7 +29,12 @@ function unlockLabel(module: CurriculumModule) {
     month: "short",
     year: "numeric",
   });
-  return module.locked ? `Unlocks ${formatted}` : `Opened ${formatted}`;
+  // The schedule is advisory, so a future module is labelled by its date rather than as
+  // something withheld — a student who joined late can still open it.
+  if (module.locked) {
+    return `Unlocks ${formatted}`;
+  }
+  return date.getTime() > Date.now() ? `Scheduled for ${formatted}` : `Opened ${formatted}`;
 }
 
 export function CurriculumView({ curriculum }: { curriculum: Curriculum }) {
