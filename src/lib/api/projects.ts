@@ -53,7 +53,9 @@ export interface ProjectDetail {
   deadline: string;
   pastDeadline: boolean;
   daysRemaining: number;
-  submission: Submission | null;
+  // The API omits null fields entirely, so an unsubmitted project arrives with no
+  // `submission` key at all. Typing it as undefined too forces callers to guard for it.
+  submission: Submission | null | undefined;
   canSubmit: boolean;
 }
 

@@ -16,7 +16,7 @@ import { useSubmitProject } from "@/lib/hooks/use-projects";
 
 interface SubmissionPanelProps {
   assignmentId: string;
-  submission: Submission | null;
+  submission: Submission | null | undefined;
   canSubmit: boolean;
 }
 
@@ -43,7 +43,7 @@ export function SubmissionPanel({ assignmentId, submission, canSubmit }: Submiss
   const [url, setUrl] = React.useState(submission?.githubRepoUrl ?? "");
   const inputId = React.useId();
 
-  const resubmitting = submission !== null && submission.status !== "NOT_STARTED";
+  const resubmitting = submission != null && submission.status !== "NOT_STARTED";
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
